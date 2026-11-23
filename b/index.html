@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earthboard · Signal Chain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+/* VOICE: loud, fun, written by players for players
+   IDEA: the website is a pedalboard. Sections sit on steel rails, a patch cable runs from the input jack to the checkout
+   PICTURE: a row of stompboxes, each one a real customer complaint; stomp it and the LED shows the fix
+   COLOUR and TYPE: black tolex board, brushed steel rails, real pedal colours, blue LED glow; Bungee for pedal lettering, Permanent Marker for the setlist, Inter body
+   LAYOUT: rails across full width, pedals in a wrapping grid, LED colour picker, taped setlist of reviews */
+:root{color-scheme:dark;--board:#121316;--board2:#18191d;--ink:#f3f4f7;--dim:#b3b8c4;--led:#2f6bff;--blue:#1177bd}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--board);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:#9cc0ff}
+h1,h2,h3{margin:0;line-height:1.05;text-wrap:balance;font-weight:400}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,18px);position:relative}
+.tolex{background-color:var(--board);background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:5px 5px}
+.rail{height:16px;background:linear-gradient(180deg,#5d6168 0%,#e6e8ec 30%,#9ba0a8 55%,#d3d6db 75%,#55595f 100%);box-shadow:0 3px 8px rgba(0,0,0,.6),0 10px 34px rgba(47,107,255,.35)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:10px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-size:16px}
+.btn.go{background:var(--led);color:#fff;box-shadow:0 0 24px rgba(47,107,255,.5)}
+.btn.ghost{border:2px solid #d3d6db;color:#fff}
+a:focus-visible,button:focus-visible{outline:3px solid #ffd34d;outline-offset:3px}
+
+.bar{background:#0b0c0e;border-bottom:1px solid #26282e}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:72px;flex-wrap:wrap}
+.bar img{height:44px;width:auto;background:#fff;border-radius:8px;padding:3px 7px;display:block}
+.nav{display:flex;gap:24px;flex-wrap:wrap;font-weight:500;font-size:15px}
+.nav a{color:var(--ink);text-decoration:none}
+
+/* cable */
+#cable{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:1}
+main{position:relative}
+.jack{display:inline-flex;align-items:center;gap:10px;font-family:Bungee,sans-serif;font-size:13px;color:#d3d6db;letter-spacing:.08em}
+.jack i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#111 0 32%,#c9ccd2 34% 58%,#6c7078 60% 100%);display:inline-block;box-shadow:0 0 0 3px #2a2c31}
+
+/* hero */
+.hero{padding:56px 0 0;position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:44px;align-items:center}
+.hero h1{font-family:Bungee,sans-serif;font-size:clamp(42px,6.2vw,82px);margin:18px 0 20px}
+.hero h1 em{font-style:normal;color:var(--led);text-shadow:0 0 30px rgba(47,107,255,.6)}
+.lede{font-size:19px;color:#d6d9e0;max-width:540px;margin:0 0 28px}
+.ctas{display:flex;flex-wrap:wrap;gap:14px}
+.hero-photo{position:relative}
+.hero-photo img{width:100%;border-radius:18px;display:block;box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 60px rgba(47,107,255,.35)}
+.hero .rails{margin-top:56px;display:flex;flex-direction:column;gap:46px;padding-bottom:30px}
+
+/* pedals */
+.sec{padding:clamp(56px,7vw,100px) 0;position:relative;z-index:2}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:36px}
+.sec h2{font-family:Bungee,sans-serif;font-size:clamp(30px,4vw,50px)}
+.sec .sub{color:var(--dim);font-size:18px;max-width:520px;margin:10px 0 0}
+.pedals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+.pedal{--c:#2fb24c;position:relative;border-radius:18px;padding:22px 22px 18px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 92%,#fff) 0%,var(--c) 45%,color-mix(in srgb,var(--c) 78%,#000) 100%);color:#111;box-shadow:inset 0 2px 0 rgba(255,255,255,.4),inset 0 -6px 0 rgba(0,0,0,.25),0 18px 30px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:12px;min-height:360px}
+.pedal.dark{color:#fff}
+.knobs{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.knob{display:flex;flex-direction:column;align-items:center;gap:6px;font:700 10px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.knob i{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#5a5d63,#141518 70%);box-shadow:0 4px 6px rgba(0,0,0,.45);position:relative;display:block}
+.knob i::after{content:"";position:absolute;left:50%;top:5px;width:3px;height:14px;margin-left:-1.5px;background:#fff;border-radius:2px;transform-origin:50% 18px;transform:rotate(var(--r,140deg))}
+.ledrow{display:flex;justify-content:center}
+.lamp{width:14px;height:14px;border-radius:50%;background:#3a0b0b;box-shadow:inset 0 1px 2px rgba(0,0,0,.6)}
+.pedal.on .lamp{background:#ff3b30;box-shadow:0 0 14px 4px rgba(255,59,48,.8)}
+.pname{font-family:Bungee,sans-serif;font-size:26px;text-align:center;line-height:1}
+.says{font-size:15px;font-style:italic;text-align:center;min-height:72px;display:flex;align-items:center;justify-content:center}
+.fix{display:none;font-weight:600;text-align:center;font-size:15px;min-height:72px;align-items:center;justify-content:center}
+.pedal.on .says{display:none}
+.pedal.on .fix{display:flex}
+.stomp{align-self:center;width:72px;height:72px;border-radius:50%;border:0;cursor:pointer;background:radial-gradient(circle at 40% 35%,#f4f5f7,#9a9ea6 55%,#5b5f66);box-shadow:0 6px 0 #33363b,0 10px 14px rgba(0,0,0,.5);margin-top:auto}
+.stomp:active{transform:translateY(4px);box-shadow:0 2px 0 #33363b,0 4px 8px rgba(0,0,0,.5)}
+.hint{text-align:center;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.pedal-rail{margin-top:34px}
+
+/* LED picker */
+.leds{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:center}
+.front{--g:#2f6bff;position:relative;height:160px;border-radius:12px;background:linear-gradient(180deg,#1b1c20,#0d0e10);box-shadow:0 30px 60px -10px var(--g),0 0 80px -20px var(--g);display:flex;align-items:center;justify-content:center;gap:9%;padding:0 8%}
+.front .slot{flex:1;height:16px;border-radius:4px;background:var(--g);box-shadow:0 0 18px 3px var(--g)}
+.front .eb{flex:0 0 auto;width:110px;filter:drop-shadow(0 0 8px var(--g)) drop-shadow(0 0 20px var(--g))}.front .eb i{display:block;width:100%;aspect-ratio:396/318;background:var(--g);-webkit-mask:url(assets/eb-mark.png) center/contain no-repeat;mask:url(assets/eb-mark.png) center/contain no-repeat}
+.front-rails{display:flex;flex-direction:column;gap:14px;margin-bottom:-6px;padding:0 3%}
+.front-rails .rail{height:12px}
+.swatches{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 10px}
+.sw{width:48px;height:48px;border-radius:50%;border:3px solid #2a2c31;cursor:pointer}
+.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 3px var(--led)}
+.ledname{font-family:Bungee,sans-serif;font-size:22px}
+.ledprice{color:var(--dim)}
+
+/* boards */
+.boards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:26px}
+.amp{border-radius:20px;background:#1c1d21;border:2px solid #2c2e34;overflow:hidden;display:flex;flex-direction:column}
+.amp .grill{background:#fff;display:flex;align-items:center;justify-content:center;height:300px}
+.amp .grill img{width:100%;height:100%;object-fit:contain}
+.amp .panel{padding:24px 26px 28px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#26282d,#18191d)}
+.amp .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.amp h3{font-family:Bungee,sans-serif;font-size:26px}
+.amp .price{font-family:Bungee,sans-serif;font-size:26px;color:#9cc0ff;white-space:nowrap}
+.amp p{margin:0;color:#d6d9e0}
+.amp ul{margin:0;padding-left:18px;color:var(--dim);font-size:15px}
+
+/* setlist */
+.setlist-wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:40px;align-items:center}
+.setlist{position:relative;background:#fbf8ef;color:#1a1a1a;border-radius:4px;padding:40px 34px 34px;transform:rotate(-1.5deg);box-shadow:0 20px 40px rgba(0,0,0,.5)}
+.setlist::before,.setlist::after{content:"";position:absolute;top:-14px;width:110px;height:32px;background:rgba(230,224,200,.85);box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.setlist::before{left:20px;transform:rotate(-6deg)}.setlist::after{right:20px;transform:rotate(5deg)}
+.setlist h3{font-family:'Permanent Marker',cursive;font-size:30px;margin-bottom:14px}
+.setlist ol{margin:0;padding-left:28px;font-family:'Permanent Marker',cursive;font-size:19px;line-height:1.45}
+.setlist li{margin-bottom:12px}
+.setlist small{font-family:Inter,sans-serif;font-size:13px;color:#555;display:block}
+.score{font-family:Bungee,sans-serif;font-size:clamp(70px,10vw,120px);line-height:1;color:#fff;text-shadow:0 0 40px rgba(47,107,255,.6)}
+
+
+/* radio */
+.radio{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:44px;align-items:center}
+.vinyl{position:relative;aspect-ratio:1;max-width:400px;width:100%;margin:auto;border-radius:50%;background:repeating-radial-gradient(circle,#0b0b0d 0 2px,#17181b 3px 4px);box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 6px #1c1d21}
+.vinyl::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 20deg,transparent 0 40deg,rgba(255,255,255,.08) 55deg,transparent 70deg 220deg,rgba(255,255,255,.06) 235deg,transparent 250deg)}
+.vinyl .lbl{position:absolute;inset:33%;border-radius:50%;background:radial-gradient(circle,#0b0b0d 0 6%,#2f6bff 7% 100%);display:grid;place-items:center;text-align:center;font-family:Bungee,sans-serif;font-size:clamp(10px,1.3vw,14px);color:#fff;line-height:1.2;padding:8px}
+.spin{animation:spin 6s linear infinite}
+.radio.paused .spin{animation-play-state:paused}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tracks{list-style:none;margin:18px 0 0;padding:0;border-top:1px solid #2c2e34}
+.tracks li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 4px;border-bottom:1px solid #2c2e34}
+.tracks .n{font-family:Bungee,sans-serif;color:#6c7078;font-size:14px}
+.tracks b{display:block;color:#fff;font-weight:600}
+.tracks span{color:var(--dim);font-size:14px}
+.tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:#1f2a44;color:#9cc0ff;white-space:nowrap}
+.tag.k{background:#3a2440;color:#e0a8ff}.tag.p{background:#1d3a2a;color:#8de0ac}
+.listen{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.listen a,.listen button{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 18px;border-radius:999px;font-weight:700;text-decoration:none;color:#fff}
+.listen .sp{background:#1db954;color:#0b0b0d}.listen .am{background:linear-gradient(135deg,#fa233b,#fb5c74)}
+.listen .pp{background:#24262c;border:1px solid #3a3d44;cursor:pointer;font:inherit;font-weight:700}
+.eqb{display:inline-flex;gap:3px;align-items:flex-end;height:16px}
+.eqb i{width:3px;background:#9cc0ff;animation:eqb 1s ease-in-out infinite}
+.eqb i:nth-child(2){animation-delay:.2s}.eqb i:nth-child(3){animation-delay:.4s}
+.radio.paused .eqb i{animation-play-state:paused}
+@keyframes eqb{0%,100%{height:4px}50%{height:16px}}
+@media(max-width:860px){.radio{grid-template-columns:minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.spin,.eqb i{animation:none}}
+
+/* output */
+.out{border-radius:24px;background:#1c1d21;border:2px solid #2c2e34;padding:clamp(28px,4vw,50px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+.out form{display:flex;gap:10px;flex-wrap:wrap}
+.out label{display:flex;flex-direction:column;gap:6px;flex:1 1 240px;font-size:14px;color:#d6d9e0}
+.out input{min-height:48px;border-radius:10px;border:1px solid #3a3d44;background:#0e0f12;color:#fff;padding:0 14px;font-size:16px}
+.out .btn{align-self:flex-end}
+.press{display:flex;flex-wrap:wrap;gap:12px 34px;justify-content:center;font-family:Bungee,sans-serif;font-size:14px;color:#8d929c;margin-top:50px}
+footer{border-top:1px solid #26282e;margin-top:70px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:18px;padding-top:30px;padding-bottom:36px;color:var(--dim);font-size:14px}
+
+/* motion */
+.js .reveal{opacity:0;transform:translateY(40px) scale(.98);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.pedal{transition:transform .25s ease}
+.pedal:hover,.js .reveal.in.pedal:hover{transform:translateY(-6px) rotate(-.6deg)}
+.pedal.on{animation:thump .35s ease}
+@keyframes thump{0%{transform:translateY(0)}35%{transform:translateY(5px) scale(.985)}100%{transform:none}}
+.knob i::after{transition:transform .6s cubic-bezier(.3,1.6,.5,1)}
+.pedal.on .knob i::after{transform:rotate(calc(var(--r,140deg) * -1 + 40deg))}
+.front{animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 30px 60px -10px var(--g),0 0 80px -20px var(--g)}50%{box-shadow:0 30px 80px -6px var(--g),0 0 120px -10px var(--g)}}
+.rail{position:relative;overflow:hidden}
+.rail::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);transform:translateX(-100%);animation:shine 5s ease-in-out infinite}
+@keyframes shine{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.hero h1 em{animation:flick 6s steps(1) infinite}
+@keyframes flick{0%,92%,96%,100%{opacity:1}93%,95%{opacity:.55}}
+.ticker{overflow:hidden;border-block:1px solid #26282e;background:#0b0c0e;position:relative;z-index:2}
+.ticker div{display:flex;gap:48px;white-space:nowrap;padding:16px 0;width:max-content;animation:tick 40s linear infinite;font-family:Bungee,sans-serif;font-size:15px;color:#d3d6db}
+.ticker span::before{content:"★ ";color:var(--led)}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.front,.rail::after,.hero h1 em,.ticker div,.pedal.on{animation:none}.js .reveal{opacity:1;transform:none;transition:none}}
+@media(max-width:960px){.pedals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:860px){.hero-grid,.leds,.setlist-wrap,.out{grid-template-columns:minmax(0,1fr)}.boards{grid-template-columns:minmax(0,1fr)}.nav{display:none}}
+@media(max-width:600px){.pedals{grid-template-columns:minmax(0,1fr)}.pedal{min-height:0}}
+</style>
+</head>
+<body class="tolex">
+
+<header class="bar">
+<div class="wrap">
+<a href="#"><img src="assets/logo.png" alt="Earthboard"></a>
+<nav class="nav" aria-label="Main"><a href="#">Shop</a><a href="#fixes">How it works</a><a href="#">Videos</a><a href="#setlist">Reviews</a><a href="#">Resources</a><a href="#">Our story</a></nav>
+<a class="btn go" href="#boards">Shop boards</a>
+</div>
+</header>
+
+<main id="main">
+
+<section class="hero">
+<div class="wrap">
+<div class="hero-grid">
+<div>
+<span class="jack" data-jack><i></i>INPUT · YOUR GUITAR</span>
+<h1>Focus on the music. <em>Not the set-up.</em></h1>
+<p class="lede">Earthboard is the steel-rail powered pedalboard. Pedals ride on magnetic trays and get power the second they touch the rails. Battery or wall power. No ripping velcro off the board and no power brick.</p>
+<div class="ctas"><a class="btn go" href="#boards">Shop pedalboards</a><a class="btn ghost" href="#fixes">Stomp through the fixes</a></div>
+</div>
+<div class="hero-photo"><img src="assets/board-side.jpg" alt="Earthboard EBII loaded with pedals and glowing blue"></div>
+</div>
+</div>
+<div class="rails" aria-hidden="true"><div class="rail"></div></div>
+</section>
+
+<div class="ticker" aria-label="What people say"><div>
+<span>"You guys thought of everything and you nailed it." · Inventor of a popular pedalboard</span><span>"Shoot, I wish I had invented this." · Ned Steinberger</span><span>"By far the coolest thing I've seen here!" · Trade show visitors</span><span>"Quiet as a dormouse, and portable." · Steve, Browns Summit, NC</span><span>"Nothing short of AWESOME!" · Duane G., Perris, CA</span>
+<span aria-hidden="true">"You guys thought of everything and you nailed it." · Inventor of a popular pedalboard</span><span aria-hidden="true">"Shoot, I wish I had invented this." · Ned Steinberger</span><span aria-hidden="true">"By far the coolest thing I've seen here!" · Trade show visitors</span><span aria-hidden="true">"Quiet as a dormouse, and portable." · Steve, Browns Summit, NC</span><span aria-hidden="true">"Nothing short of AWESOME!" · Duane G., Perris, CA</span>
+</div></div>
+<section class="sec" id="fixes">
+<div class="wrap">
+<div class="sec-head">
+<div><h2>We asked players what drove them crazy.</h2><p class="sub">Every pedal below is a real complaint from a guitar player. Stomp the footswitch to hear how we fixed it.</p></div>
+<span class="jack" data-jack><i></i>THE FIXES</span>
+</div>
+<div class="pedals">
+<article class="pedal" style="--c:#2fb24c">
+<div class="knobs"><span class="knob"><i style="--r:150deg"></i>Grip</span><span class="knob"><i style="--r:140deg"></i>Quiet</span><span class="knob"><i style="--r:150deg"></i>Speed</span></div>
+<div class="ledrow"><span class="lamp"></span></div>
+<div class="pname">Mag-Lock</div>
+<p class="says">"The ripping sound of velcro is like fingernails on a chalkboard."</p>
+<p class="fix">Each pedal sits on a magnetic tray that grabs the steel rails. Lift it off, set it back. No ripping.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Mag-Lock fix"></button>
+</article>
+<article class="pedal" style="--c:#ff8a2a">
+<div class="knobs"><span class="knob"><i style="--r:150deg"></i>Weight</span><span class="knob"><i style="--r:-140deg"></i>Bricks</span><span class="knob"><i style="--r:150deg"></i>Room</span></div>
+<div class="ledrow"><span class="lamp"></span></div>
+<div class="pname">Iso-Lator</div>
+<p class="says">"Isolating power supplies take up space and add more weight."</p>
+<p class="fix">The ISO Boot isolates one pedal right where it sits, at 9, 12, 15, 18 or 24 volts.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Iso-Lator fix"></button>
+</article>
+<article class="pedal dark" style="--c:#c9302c">
+<div class="knobs"><span class="knob"><i style="--r:-140deg"></i>Hum</span><span class="knob"><i style="--r:-140deg"></i>Buzz</span><span class="knob"><i style="--r:150deg"></i>Clean</span></div>
+<div class="ledrow"><span class="lamp" style="background:#2a0606"></span></div>
+<div class="pname">Hum Killer</div>
+<p class="says">"Nothing worse than noisy hum from dirty power circuits."</p>
+<p class="fix">Run the board on a rechargeable battery, away from the venue's wall power. Isolate any noisy pedal with an ISO Boot.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Hum Killer fix"></button>
+</article>
+<article class="pedal" style="--c:#e9dfc4">
+<div class="knobs"><span class="knob"><i style="--r:150deg"></i>Swap</span><span class="knob"><i style="--r:150deg"></i>Swap</span><span class="knob"><i style="--r:150deg"></i>Swap</span></div>
+<div class="ledrow"><span class="lamp"></span></div>
+<div class="pname">Quick Swap</div>
+<p class="says">"If I want to rearrange my pedals I need half a day!"</p>
+<p class="fix">Roll a pedal off, set another on. You can change your rig between songs.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Quick Swap fix"></button>
+</article>
+<article class="pedal dark" style="--c:#1d6fc4">
+<div class="knobs"><span class="knob"><i style="--r:-140deg"></i>Outlets</span><span class="knob"><i style="--r:-140deg"></i>Cords</span><span class="knob"><i style="--r:150deg"></i>Go</span></div>
+<div class="ledrow"><span class="lamp" style="background:#0b1a3a"></span></div>
+<div class="pname">Unplugged</div>
+<p class="says">"I hate searching for wall outlets and extension cords."</p>
+<p class="fix">One battery powers the board, and can even power a second connected Earthboard.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Unplugged fix"></button>
+</article>
+<article class="pedal dark" style="--c:#6d3fc0">
+<div class="knobs"><span class="knob"><i style="--r:-140deg"></i>Mess</span><span class="knob"><i style="--r:-140deg"></i>Yarn</span><span class="knob"><i style="--r:150deg"></i>Tidy</span></div>
+<div class="ledrow"><span class="lamp" style="background:#1d0b3a"></span></div>
+<div class="pname">Cable Cleaner</div>
+<p class="says">"So many cables under and around my board is messy!"</p>
+<p class="fix">Power runs through the rails, and the EBII has the cross-board patch cable built in.</p>
+<div class="hint">Stomp to fix it</div>
+<button class="stomp" type="button" aria-pressed="false" aria-label="Show the Cable Cleaner fix"></button>
+</article>
+</div>
+<div class="pedal-rail" aria-hidden="true"><div class="rail"></div></div>
+</div>
+</section>
+
+<section class="sec">
+<div class="wrap leds">
+<div>
+<div class="front-rails" aria-hidden="true"><div class="rail"></div><div class="rail"></div></div>
+<div class="front" id="front" role="img" aria-label="Earthboard front panel showing the chosen LED colour"><span class="slot"></span><span class="eb" aria-hidden="true"><i></i></span><span class="slot"></span></div>
+</div>
+<div>
+<span class="jack" data-jack><i></i>YOUR GLOW</span>
+<h2 style="font-family:Bungee,sans-serif;font-size:clamp(28px,3.6vw,44px);margin-top:14px">Pick your colour.</h2>
+<p class="sub" style="color:var(--dim);font-size:18px;margin:10px 0 0">Every Earthboard has built-in under-glow LEDs. Blue is our flagship. Six more colours to match your stage.</p>
+<div class="swatches" id="sw"></div>
+<div class="ledname" id="lname">Blue</div>
+<div class="ledprice" id="lprice">Flagship colour, included</div>
+</div>
+</div>
+</section>
+
+<section class="sec" id="boards">
+<div class="wrap">
+<div class="sec-head"><div><h2>Pick your board.</h2><p class="sub">Both come complete. Just add your pedals and patch cables.</p></div><span class="jack" data-jack><i></i>THE BOARDS</span></div>
+<div class="boards">
+<article class="amp">
+<div class="grill"><img src="assets/board-front-white.jpg" alt="EBII double-row board loaded with pedals, front view"></div>
+<div class="panel">
+<div class="top"><h3>EBII System</h3><span class="price">$695</span></div>
+<p>Double row. Holds up to 11 pedals plus a battery.</p>
+<ul><li>9 Gravity Boots and tethers</li><li>Rechargeable 9V battery</li><li>Built-in cross-board patch cable</li></ul>
+<a class="btn go" href="#">Build my EBII</a>
+</div>
+</article>
+<article class="amp">
+<div class="grill" style="background:#000"><img src="assets/sr-glow.jpg" alt="EBII-SR single-row board glowing blue" style="object-fit:cover"></div>
+<div class="panel">
+<div class="top"><h3>EBII-SR System</h3><span class="price">$525</span></div>
+<p>Single row. Small enough to carry to class or a fly date.</p>
+<ul><li>Fits six pedals</li><li>5 Gravity Boots, tethers and a battery</li><li>Same magnets, same rails</li></ul>
+<a class="btn go" href="#">Build my EBII-SR</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<section class="sec" id="setlist">
+<div class="wrap setlist-wrap">
+<div>
+<span class="jack" data-jack><i></i>TONIGHT'S SETLIST</span>
+<div class="score" style="margin-top:16px">4.9</div>
+<p style="font-size:18px;color:#d6d9e0;margin:6px 0 0">average from 22 reviews of the EBII System</p>
+</div>
+<div class="setlist">
+<h3>Setlist · Reviews</h3>
+<ol>
+<li>"My single board was so good I had to buy a double." <small>Keith G., verified buyer</small></li>
+<li>"Love the simplicity, the use of a battery, and the ease of switching out pedals." <small>Steven P., verified buyer</small></li>
+<li>"Product is a game changer." <small>Michael P., verified buyer</small></li>
+<li>"I still love this Earthboard pedalboard!" <small>Danny "Guitarwood" Garwood</small></li>
+</ol>
+</div>
+</div>
+</section>
+
+<section class="sec" id="radio">
+<div class="wrap radio">
+<div class="vinyl spin" aria-hidden="true"><div class="lbl">Earthboard<br>Radio</div></div>
+<div>
+<span class="jack"><i></i>EARTHBOARD RADIO</span>
+<h2 style="margin-top:14px">What's on our board.</h2>
+<p class="sub">Mark and Kym's favorite songs, plus tracks from players who gig with an Earthboard. Press play while you shop.</p>
+<ul class="tracks">
+<li><span class="n">01</span><div><b>Song title</b><span>Artist</span></div><em class="tag">Mark's pick</em></li>
+<li><span class="n">02</span><div><b>Song title</b><span>Artist</span></div><em class="tag k">Kym's pick</em></li>
+<li><span class="n">03</span><div><b>Track title</b><span>Johnny Hiland</span></div><em class="tag p">Plays Earthboard</em></li>
+<li><span class="n">04</span><div><b>Song title</b><span>Artist</span></div><em class="tag">Mark's pick</em></li>
+<li><span class="n">05</span><div><b>Track title</b><span>Doug Doppler</span></div><em class="tag p">Plays Earthboard</em></li>
+</ul>
+<div class="listen">
+<button class="pp" type="button" id="pp" aria-pressed="true"><span class="eqb" aria-hidden="true"><i></i><i></i><i></i></span><span id="ppt">Pause</span></button>
+<a class="sp" href="#radio">Listen on Spotify</a>
+<a class="am" href="#radio">Listen on Apple Music</a>
+</div>
+</div>
+</div>
+</section>
+
+<section class="wrap" style="position:relative;z-index:2">
+<div class="out">
+<div>
+<span class="jack" data-jack><i></i>OUTPUT · TO YOUR AMP</span>
+<h2 style="font-family:Bungee,sans-serif;font-size:clamp(26px,3.4vw,40px);margin-top:14px">Stay plugged in.</h2>
+<p style="color:#d6d9e0;margin:8px 0 0">Join 7,000 players for new gear, deals and setup tips.</p>
+</div>
+<form id="sign"><label>Email<input type="email" required placeholder="you@email.com"></label><button class="btn go" type="submit">Sign me up</button><p id="thanks" hidden style="margin:0;color:#d6d9e0">You're on the list. (Mockup only, nothing was sent.)</p></form>
+</div>
+<div class="press"><span>Guitar Player</span><span>Guitar World</span><span>Premier Guitar</span><span>Vintage Guitar</span><span>Music Inc.</span></div>
+</section>
+</main>
+
+<footer><div class="wrap"><div><strong style="color:#fff">Focus on the music, not the set-up.</strong><br>Rare Earth Music LLC · info@earthboardmusic.com</div><div>Shop · How it works · Resources · Our story · Press</div></div></footer>
+
+<script>
+{
+document.querySelectorAll('.pedal').forEach(p=>{const b=p.querySelector('.stomp');b.addEventListener('click',()=>{const on=p.classList.toggle('on');b.setAttribute('aria-pressed',on?'true':'false');});});
+const leds=[['Blue','#2f6bff','Flagship colour, included'],['Orange','#ff7a1a','+$10'],['Green','#20d060','+$10'],['Red','#ff2a2a','+$10'],['Yellow','#ffd21a','+$10'],['Purple','#a64dff','+$10'],['White','#f4f6ff','+$10']];
+const sw=document.getElementById('sw'),front=document.getElementById('front'),ln=document.getElementById('lname'),lp=document.getElementById('lprice');
+const sws=leds.map((l,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.background=l[1];b.setAttribute('aria-label',l[0]);b.setAttribute('aria-pressed',i===0?'true':'false');b.addEventListener('click',()=>{sws.forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');front.style.setProperty('--g',l[1]);ln.textContent=l[0];lp.textContent=l[2];});sw.appendChild(b);return b;});
+document.getElementById('sign').addEventListener('submit',e=>{e.preventDefault();document.getElementById('thanks').hidden=false;});
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rd=document.querySelector('.radio'),pp=document.getElementById('pp');pp.addEventListener('click',()=>{const p=rd.classList.toggle('paused');pp.setAttribute('aria-pressed',p?'false':'true');document.getElementById('ppt').textContent=p?'Play':'Pause';});
+document.documentElement.classList.add('js');
+document.querySelectorAll('.pedal,.amp,.setlist,.tracks,.sec h2,.sec .sub,.leds > div,.out,.score').forEach((e,i)=>{e.classList.add('reveal');e.style.transitionDelay=((i%3)*110)+'ms';});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+}
+</script>
+</body>
+</html>

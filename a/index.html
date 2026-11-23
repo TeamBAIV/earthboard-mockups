@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earthboard · Out of This World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: confident, playful, a little cosmic
+   IDEA: the pedalboard is a spacecraft and every page section is a stage of a launch
+   PICTURE: the glowing single-row board floating over the curve of a blue planet
+   COLOUR and TYPE: deep space black, Earthboard blue, LED glow; Michroma display (matches the logo), Inter body
+   LAYOUT: full-bleed bands, countdown steps, mission patches, interactive voltage dial */
+:root{color-scheme:dark;--sky:#03040a;--ink:#eef2fb;--dim:#a9b4cc;--blue:#1177bd;--led:#3d6bff;--glow:rgba(61,107,255,.55);--panel:#0b1020;--line:#1d2848}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--sky);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;overflow-x:clip}
+a{color:#8fb3ff}
+h1,h2,h3,.disp{font-family:Michroma,sans-serif;font-weight:400;line-height:1.1;text-wrap:balance;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,18px)}
+.stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(1px 1px at 30px 40px,#fff 50%,transparent 51%),radial-gradient(1px 1px at 140px 120px,#bcd0ff 50%,transparent 51%),radial-gradient(1.6px 1.6px at 260px 60px,#fff 50%,transparent 51%),radial-gradient(1px 1px at 380px 200px,#fff 50%,transparent 51%),radial-gradient(1px 1px at 470px 30px,#9fb8ff 50%,transparent 51%),radial-gradient(1.4px 1.4px at 80px 260px,#fff 50%,transparent 51%);background-size:520px 300px;opacity:.8}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;border-radius:999px;font-weight:600;text-decoration:none;border:0;cursor:pointer;font-size:16px}
+.btn.go{background:var(--led);color:#fff;box-shadow:0 0 28px var(--glow)}
+.btn.go:hover{background:#5a82ff}
+.btn.ghost{border:1.5px solid #4d6bb8;color:var(--ink);background:transparent}
+.btn:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #ffd34d;outline-offset:3px}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(3,4,10,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:72px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo img{height:42px;width:auto;background:#fff;border-radius:8px;padding:3px 7px}
+.nav{display:flex;gap:24px;flex-wrap:wrap;font-size:15px}
+.nav a{color:var(--ink);text-decoration:none}
+.nav a:hover{color:#8fb3ff}
+.cart{display:flex;gap:10px;align-items:center}
+
+/* hero */
+.hero{position:relative;overflow:hidden;min-height:760px;display:flex;align-items:flex-start}
+.planet{position:absolute;left:50%;bottom:-1150px;width:2000px;height:1400px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse at 50% 8%,#2a6fd6 0%,#123a86 18%,#071433 42%,#03040a 70%);box-shadow:0 -6px 60px 10px rgba(61,120,255,.45),inset 0 10px 40px rgba(140,190,255,.6)}
+.hero .wrap{position:relative;z-index:2;padding-top:70px;width:100%}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:40px;align-items:center}
+.kicker{font-family:Michroma,sans-serif;font-size:13px;letter-spacing:.2em;color:#8fb3ff}
+.hero h1{font-size:clamp(40px,6.4vw,84px);margin:18px 0 22px}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:1.5px #9fbaff}
+.lede{font-size:19px;color:#cdd6ea;max-width:520px;margin:0 0 30px}
+.ctas{display:flex;flex-wrap:wrap;gap:14px}
+.craft{position:relative}
+.craft{transform:scale(1.12);transform-origin:left center}
+.craft img{width:100%;display:block;animation:float 7s ease-in-out infinite;-webkit-mask-image:radial-gradient(ellipse 62% 58% at 50% 50%,#000 60%,transparent 100%);mask-image:radial-gradient(ellipse 62% 58% at 50% 50%,#000 60%,transparent 100%)}
+.craft::after{content:"";position:absolute;left:15%;right:15%;bottom:4%;height:22%;background:radial-gradient(closest-side,rgba(61,107,255,.45),transparent);filter:blur(12px);z-index:-1}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hud{position:absolute;font-size:12px;letter-spacing:.06em;color:#bcd0ff;background:rgba(9,16,38,.8);border:1px solid #2c3f78;border-radius:10px;padding:8px 12px;white-space:nowrap}
+.hud b{display:block;color:#fff;font-size:14px;letter-spacing:0}
+.h1p{top:6%;left:-4%}.h2p{bottom:16%;left:4%}.h3p{top:18%;right:-2%}
+.telemetry{position:relative;z-index:2;margin-top:70px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.telemetry div{background:rgba(6,10,24,.92);padding:20px 22px}
+.telemetry b{font-family:Michroma,sans-serif;font-size:22px;font-weight:400;display:block;color:#fff}
+.telemetry span{color:var(--dim);font-size:14px}
+
+/* countdown */
+.band{padding:clamp(56px,7vw,110px) 0;position:relative}
+.sec-title{font-size:clamp(30px,4vw,48px);margin:10px 0 14px}
+.sec-sub{color:var(--dim);font-size:18px;max-width:640px;margin:0}
+.count{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.step img{width:100%;height:250px;object-fit:cover;display:block}
+.step .t{padding:22px 24px 26px;display:flex;flex-direction:column;gap:8px}
+.tminus{font-family:Michroma,sans-serif;font-size:56px;line-height:1;color:var(--led);text-shadow:0 0 22px var(--glow)}
+.step h3{font-size:20px}
+.step p{margin:0;color:#c6cfe3}
+
+/* patches */
+.patches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin-top:44px}
+.patch{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.ring{width:170px;height:170px;border-radius:50%;border:3px solid var(--led);box-shadow:0 0 0 8px #0b1020,0 0 0 10px #2c3f78,0 0 34px var(--glow);overflow:hidden;background:#000}
+.ring img{width:100%;height:100%;object-fit:cover}
+.patch h3{font-size:17px}
+.patch .plain{font-size:13px;letter-spacing:.04em;color:#8fb3ff}
+.patch p{margin:0;color:#c6cfe3;font-size:15px;max-width:250px}
+
+/* voltage dial */
+.dial-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center}
+.dial{position:relative;aspect-ratio:1;max-width:440px;width:100%;margin:0 auto;border-radius:50%;background:radial-gradient(circle,#101a3a 0 54%,#070b18 55% 100%);border:1px solid #2c3f78;box-shadow:0 0 60px rgba(61,107,255,.25)}
+.dial .center{position:absolute;inset:30%;border-radius:50%;background:#03040a;border:2px solid var(--led);box-shadow:0 0 30px var(--glow);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.dial .center b{font-family:Michroma,sans-serif;font-size:clamp(34px,5vw,54px);font-weight:400;line-height:1}
+.dial .center span{font-size:13px;color:var(--dim)}
+.vbtn{position:absolute;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;border:1.5px solid #3b55a0;background:#0b1020;color:#fff;font:600 15px Inter,sans-serif;cursor:pointer}
+.vbtn[aria-pressed=true]{background:var(--led);border-color:#9fb8ff;box-shadow:0 0 24px var(--glow)}
+.vinfo{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:30px}
+.vinfo h3{font-size:24px;margin-bottom:12px}
+.vinfo p{color:#c6cfe3;margin:0 0 14px}
+.vinfo ul{margin:0;padding-left:20px;color:#c6cfe3}
+
+/* vessels */
+.vessels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:44px}
+.vessel{position:relative;border-radius:26px;overflow:hidden;background:#000;border:1px solid var(--line);display:flex;flex-direction:column}
+.vessel img{width:100%;height:320px;object-fit:cover;display:block}
+.vessel .t{padding:26px 28px 30px;display:flex;flex-direction:column;gap:12px;background:linear-gradient(180deg,#05081a,#0b1020)}
+.vessel .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.vessel h3{font-size:26px}
+.price{font-family:Michroma,sans-serif;font-size:26px;white-space:nowrap}
+.vessel p{margin:0;color:#c6cfe3}
+.tag{align-self:flex-start;font-size:12px;letter-spacing:.08em;padding:6px 12px;border-radius:999px;background:rgba(61,107,255,.18);color:#bcd0ff;border:1px solid #3b55a0}
+
+/* reviews */
+.reviews{display:grid;grid-template-columns:minmax(0,.8fr) repeat(3,minmax(0,1fr));gap:22px;margin-top:40px;align-items:stretch}
+.score{background:var(--led);border-radius:22px;padding:28px;display:flex;flex-direction:column;justify-content:center;gap:6px;box-shadow:0 0 40px var(--glow)}
+.score b{font-family:Michroma,sans-serif;font-size:64px;font-weight:400;line-height:1}
+.rev{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.rev .stars5{color:#ffd34d;letter-spacing:2px}
+.rev p{margin:0;color:#dfe6f5}
+.rev small{color:var(--dim)}
+
+/* press strip */
+.press{display:flex;flex-wrap:wrap;gap:14px 40px;justify-content:center;font-family:Michroma,sans-serif;font-size:15px;color:#9fb0d6}
+
+/* signup */
+.signal{border-radius:30px;padding:clamp(30px,5vw,60px);background:radial-gradient(ellipse at 80% 0%,#1d3f9a 0%,#0b1020 60%);border:1px solid #2c3f78;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:30px;align-items:center}
+.signal form{display:flex;gap:10px;flex-wrap:wrap}
+.signal label{display:flex;flex-direction:column;gap:6px;flex:1 1 240px;font-size:14px;color:#cdd6ea}
+.signal input{min-height:48px;border-radius:12px;border:1px solid #3b55a0;background:#03040a;color:#fff;padding:0 14px;font-size:16px}
+.signal .btn{align-self:flex-end}
+.note{font-size:14px;color:#cdd6ea;margin:8px 0 0}
+
+footer{border-top:1px solid var(--line);margin-top:80px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-top:34px;padding-bottom:40px;color:var(--dim);font-size:14px}
+footer .tl{font-family:Michroma,sans-serif;color:#fff;font-size:15px}
+
+/* promo popup */
+.promo{position:fixed;left:20px;bottom:20px;z-index:40;max-width:340px;background:#0b1020;border:1px solid #3b55a0;border-radius:18px;padding:20px 20px 18px;box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 30px var(--glow)}
+.promo h4{margin:0 0 6px;font-family:Michroma,sans-serif;font-weight:400;font-size:16px}
+.promo p{margin:0 0 12px;color:#cdd6ea;font-size:14px}
+.promo .x{position:absolute;top:8px;right:8px;width:44px;height:44px;border:0;background:transparent;color:#cdd6ea;font-size:22px;cursor:pointer}
+.promo[hidden]{display:none}
+
+@media(max-width:900px){
+.hero-grid,.dial-wrap,.signal{grid-template-columns:minmax(0,1fr)}
+.count,.vessels{grid-template-columns:minmax(0,1fr)}
+.patches{grid-template-columns:repeat(2,minmax(0,1fr))}
+.reviews{grid-template-columns:minmax(0,1fr)}
+.telemetry{grid-template-columns:repeat(2,minmax(0,1fr))}
+.nav{display:none}
+.hud{display:none}
+.hero{min-height:0;padding-bottom:40px}
+}
+@media(max-width:520px){.patches{grid-template-columns:minmax(0,1fr)}.ring{width:150px;height:150px}.promo{left:10px;right:10px;max-width:none}}
+/* motion */
+.stars{animation:twinkle 5s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.85}50%{opacity:.4}}
+.shoot{position:absolute;top:120px;left:-200px;width:180px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,#cfe0ff);transform:rotate(-18deg);animation:shoot 9s linear infinite;opacity:0;z-index:1}
+.shoot.s2{top:300px;animation-delay:4.5s;animation-duration:11s}
+@keyframes shoot{0%{transform:translate(0,0) rotate(-18deg);opacity:0}3%{opacity:1}12%{transform:translate(1400px,-460px) rotate(-18deg);opacity:0}100%{opacity:0}}
+.js .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.led-line{height:3px;margin-top:-1px;background:linear-gradient(90deg,transparent,var(--led),transparent);background-size:200% 100%;animation:sweep 3.5s linear infinite;box-shadow:0 0 18px var(--glow)}
+@keyframes sweep{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.ring{transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.patch:hover .ring{transform:rotate(-8deg) scale(1.05)}
+.step{transition:transform .4s,border-color .4s}.step:hover{transform:translateY(-6px);border-color:#3b55a0}
+.tminus{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{text-shadow:0 0 22px var(--glow)}50%{text-shadow:0 0 6px var(--glow)}}
+@media(prefers-reduced-motion:reduce){.craft img,.stars,.shoot,.led-line,.tminus{animation:none}.shoot{display:none}.js .reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<header class="bar">
+<div class="wrap">
+<a class="logo" href="#"><img src="assets/logo.png" alt="Earthboard"></a>
+<nav class="nav" aria-label="Main">
+<a href="#">Shop</a><a href="#launch">How it works</a><a href="#">Videos</a><a href="#ground">Reviews</a><a href="#">Resources</a><a href="#">Our story</a>
+</nav>
+<div class="cart"><a class="btn go" href="#vessels">Shop boards</a></div>
+</div>
+</header>
+
+<section class="hero">
+<div class="stars"></div>
+<span class="shoot" aria-hidden="true"></span><span class="shoot s2" aria-hidden="true"></span>
+<div class="planet" aria-hidden="true"></div>
+<div class="wrap">
+<div class="hero-grid">
+<div>
+<div class="kicker">THE EARTHBOARD PEDALBOARD SYSTEM</div>
+<h1>Out of this world. <span>Down to earth.</span></h1>
+<p class="lede">Pedals lock onto powered steel rails with rare earth magnets. No ripping velcro off the board, no power brick and no hunting for a wall outlet. Swap a pedal between songs and keep playing.</p>
+<div class="ctas">
+<a class="btn go" href="#vessels">Choose your board</a>
+<a class="btn ghost" href="#launch">See how it works</a>
+</div>
+</div>
+<div class="craft">
+<img src="assets/board-side.jpg" alt="Earthboard EBII loaded with pedals, glowing blue">
+</div>
+</div>
+<div class="telemetry">
+<div><b data-count="18">18 hrs</b><span>battery life, depending on your pedals</span></div>
+<div><b>9 lbs</b><span>EBII with Gravity Boots</span></div>
+<div><b>0</b><span>power bricks required</span></div>
+<div><b data-count="3">3</b><span>U.S. patents, all granted in one year</span></div>
+</div>
+</div>
+</section>
+
+<div class="led-line" aria-hidden="true"></div>
+<section class="band" style="padding:46px 0;text-align:center">
+<div class="wrap">
+<p class="disp reveal" style="font-size:clamp(20px,2.6vw,30px);line-height:1.4;max-width:900px;margin:0 auto">"Shoot, I wish I had invented this."</p>
+<p class="reveal" style="color:var(--dim);margin:12px 0 0">Ned Steinberger, instrument inventor, at the first trade show we ever did</p>
+</div>
+</section>
+<section class="band" id="launch">
+<div class="wrap">
+<div class="kicker">LAUNCH SEQUENCE</div>
+<h2 class="sec-title">Three, two, one, play.</h2>
+<p class="sec-sub">Set it up once. After that, every change takes seconds.</p>
+<div class="count">
+<article class="step">
+<img src="assets/boots-fan.jpg" alt="Gravity Boots and ISO Boots fanned out in front of a board with red LEDs" style="object-position:50% 72%">
+<div class="t"><div class="tminus">3</div><h3>Mount each pedal</h3><p>Stick each pedal on a Gravity Boot, our magnetic pedal tray. Loop-side velcro is already on it.</p></div>
+</article>
+<article class="step">
+<img src="assets/violet-led.jpg" alt="Earthboard glowing purple at a venue">
+<div class="t"><div class="tminus">2</div><h3>Land it on the rails</h3><p>Magnets grab the steel rails and 9 volts flow through the boot to the pedal. No cable to plug in.</p></div>
+</article>
+<article class="step">
+<img src="assets/board-top.jpg" alt="A gig-ready Earthboard seen from above" style="object-position:50% 78%">
+<div class="t"><div class="tminus">1</div><h3>Play anywhere</h3><p>Run it all on a quiet battery or plug into AC. Roll a pedal off, set a new one on, done.</p></div>
+</article>
+</div>
+</div>
+</section>
+
+<section class="band" style="background:#070a16;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+<div class="wrap">
+<div class="kicker">MISSION GEAR</div>
+<h2 class="sec-title">Meet the crew.</h2>
+<p class="sec-sub">Every part of the system has a call sign and a job on the mission.</p>
+<div class="patches">
+<div class="patch"><div class="ring"><img src="assets/board-only.jpg" alt=""></div><h3>The board</h3><div class="plain">MAGNETIC PEDALBOARD</div><p>Powered steel rails and LED glow. Double row or single row.</p></div>
+<div class="patch"><div class="ring"><img src="assets/boots-fan.jpg" alt="" style="object-position:50% 80%"></div><h3>Gravity Boot</h3><div class="plain">9V MAGNETIC PEDAL TRAY</div><p>Holds one pedal and carries power to it from the rails.</p></div>
+<div class="patch"><div class="ring"><img src="assets/iso-boot.jpg" alt=""></div><h3>ISO Boot</h3><div class="plain">ISOLATED POWER TRAY</div><p>Isolates a noisy or digital pedal and sets its voltage. No extra power supply.</p></div>
+<div class="patch"><div class="ring"><img src="assets/patch-cables.jpg" alt="" style="object-position:50% 15%"></div><h3>Tethers</h3><div class="plain">PEDAL POWER CABLES</div><p>Short cables from each boot to its pedal, or to a floor pedal or a second board.</p></div>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap dial-wrap">
+<div class="dial" id="dial" role="group" aria-label="Pick a pedal voltage">
+<div class="center"><b id="vOut">9V</b><span id="vSub">Gravity Boot</span></div>
+</div>
+<div class="vinfo">
+<div class="kicker">GROUND CONTROL</div>
+<h3 id="vHead">Every pedal, every voltage, one board</h3>
+<p id="vText">Most pedals run on 9 volts, so a standard Gravity Boot powers them straight from the rails.</p>
+<ul>
+<li>Choose the ISO Boot for digital or noisy pedals</li>
+<li>Pick the voltage your pedal needs</li>
+<li>No separate isolated power supply to carry</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="band" id="vessels" style="padding-top:0">
+<div class="wrap">
+<div class="kicker">CHOOSE YOUR VESSEL</div>
+<h2 class="sec-title">Two boards. Same magic.</h2>
+<div class="vessels">
+<article class="vessel">
+<img src="assets/board-side.jpg" alt="EBII double-row system loaded with pedals">
+<div class="t">
+<span class="tag">FLAGSHIP · DOUBLE ROW</span>
+<div class="row"><h3>EBII System</h3><span class="price">$695</span></div>
+<p>Holds up to 11 pedals plus a battery. Comes with 9 Gravity Boots, tethers and a rechargeable battery.</p>
+<a class="btn go" href="#">Build my EBII</a>
+</div>
+</article>
+<article class="vessel">
+<img src="assets/sr-glow.jpg" alt="EBII-SR single-row board with blue LEDs">
+<div class="t">
+<span class="tag">GRAB AND GO · SINGLE ROW</span>
+<div class="row"><h3>EBII-SR System</h3><span class="price">$525</span></div>
+<p>Fits six pedals and comes with five Gravity Boots, tethers and a battery. Small enough for a backpack.</p>
+<a class="btn go" href="#">Build my EBII-SR</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+
+<section class="band" id="ground" style="padding-top:0">
+<div class="wrap">
+<div class="kicker">TRANSMISSIONS FROM EARTH</div>
+<h2 class="sec-title">Players who made the switch</h2>
+<div class="reviews">
+<div class="score"><b>4.9</b><span>average from 22 reviews on the EBII System</span></div>
+<div class="rev"><div class="stars5" aria-label="5 stars">★★★★★</div><p>"My single board was so good I had to buy a double. Can't recommend this system enough and the customer service is top notch."</p><small>Keith G. · Verified buyer</small></div>
+<div class="rev"><div class="stars5" aria-label="5 stars">★★★★★</div><p>"Love the simplicity, the use of a battery, and the ease of switching out pedals."</p><small>Steven P. · Verified buyer</small></div>
+<div class="rev"><div class="stars5" aria-label="5 stars">★★★★★</div><p>"Customer service is excellent, product is a game changer."</p><small>Michael P. · Verified buyer</small></div>
+</div>
+</div>
+</section>
+
+<section class="band" style="padding-top:20px">
+<div class="wrap">
+<div class="press" aria-label="As seen in">
+<span>Guitar Player</span><span>Guitar World</span><span>Premier Guitar</span><span>Vintage Guitar</span><span>Music Inc.</span><span>Music Trades</span>
+</div>
+</div>
+</section>
+
+<section class="wrap">
+<div class="signal">
+<div>
+<div class="kicker">STAY IN ORBIT</div>
+<h2 class="sec-title" style="margin-bottom:8px">Get launch news first</h2>
+<p class="note">New gear is in the works. Join 7,000 players on the list for early access and deals.</p>
+</div>
+<form id="sign">
+<label>Email<input type="email" required placeholder="you@email.com" id="em"></label>
+<button class="btn go" type="submit">Sign me up</button>
+<p class="note" id="thanks" hidden>Thanks! You're on the list. (Mockup only, nothing was sent.)</p>
+</form>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+<div><div class="tl">Focus on the music, not the set-up.</div><div>Rare Earth Music LLC · info@earthboardmusic.com</div></div>
+<div>Shop · How it works · Resources · Our story · Press</div>
+</div>
+</footer>
+
+<aside class="promo" id="promo" aria-label="Current offer" hidden>
+<button class="x" id="px" aria-label="Close offer">×</button>
+<h4>Holiday launch deal</h4>
+<p>[Your current offer here.] Sales show up as a popup like this, so the homepage never needs a new banner.</p>
+<a class="btn go" href="#vessels" style="min-height:44px;font-size:15px">Shop the sale</a>
+</aside>
+
+<script>
+{
+const volts=[
+ {v:'9V',sub:'Gravity Boot',h:'Most pedals: plug and play',t:'Most pedals run on 9 volts, so a standard Gravity Boot powers them straight from the rails.'},
+ {v:'12V',sub:'ISO Boot',h:'12 volts, isolated',t:'Set an ISO Boot to 12V for pedals that want more headroom. It is isolated from the rest of the board.'},
+ {v:'15V',sub:'ISO Boot',h:'15 volts, isolated',t:'An ISO Boot steps the rail power up to 15V for that one pedal. Nothing else on the board changes.'},
+ {v:'18V',sub:'ISO Boot',h:'18 volts, isolated',t:'18V pedals run happily on an ISO Boot. No second power supply to carry.'},
+ {v:'24V',sub:'ISO Boot',h:'Even 24 volts',t:'Yes, even 24V pedals. The ISO Boot handles it right at the pedal.'}
+];
+const dial=document.getElementById('dial');
+const out=document.getElementById('vOut'),sub=document.getElementById('vSub'),head=document.getElementById('vHead'),text=document.getElementById('vText');
+const btns=volts.map((o,i)=>{
+ const a=(-90+i*(360/volts.length))*Math.PI/180;
+ const b=document.createElement('button');
+ b.className='vbtn';b.type='button';b.textContent=o.v;
+ b.style.left=(50+40*Math.cos(a))+'%';b.style.top=(50+40*Math.sin(a))+'%';
+ b.setAttribute('aria-pressed',i===0?'true':'false');
+ b.addEventListener('click',()=>pick(i));
+ dial.appendChild(b);return b;
+});
+function pick(i){btns.forEach((b,j)=>b.setAttribute('aria-pressed',j===i?'true':'false'));const o=volts[i];out.textContent=o.v;sub.textContent=o.sub;head.textContent=o.h;text.textContent=o.t;}
+dial.addEventListener('keydown',e=>{const cur=btns.findIndex(b=>b.getAttribute('aria-pressed')==='true');if(e.key==='ArrowRight'||e.key==='ArrowDown'){const n=(cur+1)%btns.length;pick(n);btns[n].focus();}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){const n=(cur-1+btns.length)%btns.length;pick(n);btns[n].focus();}});
+setTimeout(()=>{document.getElementById('promo').hidden=false;},4000);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.documentElement.classList.add('js');
+const rv=document.querySelectorAll('.sec-title,.sec-sub,.step,.patch,.vessel,.rev,.score,.vinfo,.dial,.telemetry,.signal,.press,.hero-grid > div');
+rv.forEach((e,i)=>{e.classList.add('reveal');e.style.transitionDelay=((i%4)*90)+'ms';});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+document.querySelectorAll('[data-count]').forEach(el=>{const end=+el.dataset.count;const suf=el.textContent.replace(/[0-9]/g,'');if(reduce)return;let n=0;const tick=()=>{n++;el.textContent=n+suf;if(n<end)setTimeout(tick,60);};el.textContent='0'+suf;const o=new IntersectionObserver(es=>{if(es[0].isIntersecting){tick();o.disconnect();}});o.observe(el);});
+document.getElementById('px').addEventListener('click',()=>{document.getElementById('promo').hidden=true;});
+document.getElementById('sign').addEventListener('submit',e=>{e.preventDefault();document.getElementById('thanks').hidden=false;});
+}
+</script>
+</body>
+</html>

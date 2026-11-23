@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earthboard Website Drafts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: warm, organised, client-ready
+   IDEA: a gig poster for the website project: the lineup is the drafts, the setlist is the call follow-ups
+   PICTURE: four big draft cards with real photos, then the site map drawn as a tree
+   COLOUR and TYPE: deep navy band, white body, Earthboard blue; Archivo headings, Inter body
+   LAYOUT: hero, draft cards, site map, call follow-ups table, what we need, next steps */
+:root{color-scheme:light;--ink:#0d1420;--dim:#4a5566;--line:#e2e7ee;--soft:#f4f7fa;--blue:#1177bd;--navy:#07101f}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Archivo,sans-serif;margin:0;line-height:1.1;text-wrap:balance}
+.wrap{max-width:1200px;margin:0 auto;padding:0 max(4vw,16px)}
+a{color:#0d5f99}
+a:focus-visible{outline:3px solid #ffb703;outline-offset:3px}
+.hero{background:var(--navy);color:#fff;padding:48px 0 56px}
+.hero img{height:54px;background:#fff;border-radius:10px;padding:4px 8px}
+.hero h1{font-size:clamp(34px,5vw,56px);margin:26px 0 10px}
+.hero p{color:#c9d4e6;font-size:18px;margin:0;max-width:680px}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.meta span{border:1px solid #2b3a58;border-radius:999px;padding:6px 14px;font-size:14px;color:#c9d4e6}
+.band{padding:56px 0}
+.band+.band{border-top:1px solid var(--line)}
+.band h2{font-size:clamp(26px,3vw,36px);margin-bottom:8px}
+.lead{color:var(--dim);margin:0 0 26px;max-width:700px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.card{border:1px solid var(--line);border-radius:20px;overflow:hidden;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;transition:transform .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(13,20,32,.12)}
+.card .img{height:230px;background:#05060a;overflow:hidden}
+.card .img img{width:100%;height:100%;object-fit:cover;display:block}
+.card .t{padding:20px 22px 24px;display:flex;flex-direction:column;gap:8px}
+.card .tag{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.card h3{font-size:24px}
+.card p{margin:0;color:var(--dim)}
+.card .go{margin-top:6px;font-weight:700;color:var(--blue)}
+.tree{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.node{background:var(--soft);border-radius:16px;padding:18px}
+.node b{font-family:Archivo,sans-serif;font-size:18px;display:block;margin-bottom:6px}
+.node ul{margin:0;padding-left:18px;color:var(--dim);font-size:15px}
+.node .new{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:#e5f1fb;color:#0d5f99;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:2px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--dim);font-weight:600}
+td:first-child{font-weight:600;width:30%}
+.st{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.done{background:#e3f5e8;color:#16632e}
+.prog{background:#fff2cc;color:#7a5600}
+.wait{background:#fde7e5;color:#9a2318}
+.need{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.need div{border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.need b{display:block}
+.need span{color:var(--dim);font-size:15px}
+.next{display:flex;flex-direction:column;gap:12px;max-width:760px}
+.next div{display:flex;gap:14px;align-items:flex-start}
+.next i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--blue);color:#fff;font-style:normal;font-weight:700;display:flex;align-items:center;justify-content:center}
+footer{background:var(--navy);color:#c9d4e6;padding:30px 0;font-size:14px}
+@media(max-width:900px){.tree{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.cards,.need{grid-template-columns:minmax(0,1fr)}.tree{grid-template-columns:minmax(0,1fr)}td:first-child{width:auto}}
+@media(max-width:600px){.stack thead{display:none}.stack tr{display:grid;padding:10px 0;border-bottom:1px solid var(--line)}.stack td{border:0;padding:3px 0}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+<div class="wrap">
+<img src="assets/logo.png" alt="Earthboard">
+<h1>Your new website, first look</h1>
+<p>Three homepage directions, matching product pages and drafts of Our Story, Reviews, Resources and Press, plus the plan for every page on the new Shopify site. Click around, try the buttons and tell us what you love and what you don't.</p>
+<div class="meta"><span>Prepared for Mark and Kym</span><span>Check-in call · November 23, 2026</span><span>Drafts, not final copy</span></div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Pick a direction</h2>
+<p class="lead">Same products and same menu in three very different moods. You can pick one or mix pieces from each. Every inner page can switch to match the direction you like.</p>
+<div class="cards">
+<a class="card" href="a/"><div class="img"><img src="assets/sr-glow.jpg" alt=""></div><div class="t"><span class="tag">Direction A</span><h3>Out of this world</h3><p>Your space story, all in. The board floats over a blue planet, a 3-2-1 launch sequence explains setup and a voltage dial shows the ISO Boot.</p><span class="go">Open direction A</span></div></a>
+<a class="card" href="b/"><div class="img"><img src="assets/board-side.jpg" alt=""></div><div class="t"><span class="tag">Direction B</span><h3>Signal chain</h3><p>The site is a pedalboard. Each player complaint is a stompbox you can stomp to see the fix. It also has an LED color picker and a setlist of reviews.</p><span class="go">Open direction B</span></div></a>
+<a class="card" href="c/"><div class="img" style="background:#e8f4fc"><img src="assets/board-cutout.png" alt="" style="object-fit:contain;padding:24px"></div><div class="t"><span class="tag">Direction C</span><h3>Gig day</h3><p>Light and sunny. Follow a gig night from load-in to load-out, pick who's playing (including gift shoppers) and watch real players' video reviews.</p><span class="go">Open direction C</span></div></a>
+<a class="card" href="pages/#ebii"><div class="img"><img src="assets/boots-fan.jpg" alt="" style="object-position:50% 75%"></div><div class="t"><span class="tag">Product and inner pages</span><h3>Products, Our story, Reviews, Resources, Press</h3><p>Six pages with a style switch at the top, so each one matches A, B or C. Yellow call notes tie every choice back to our conversations.</p><span class="go">Open the site pages</span></div></a>
+</div>
+<div class="tree" style="margin-top:22px;grid-template-columns:repeat(3,minmax(0,1fr))">
+<a class="node" href="pages/#ebii" style="text-decoration:none;color:inherit"><b>EBII product page</b><ul><li>Live price, upsells, LED picker</li></ul></a>
+<a class="node" href="pages/#gravity-boot" style="text-decoration:none;color:inherit"><b>Gravity Boot product page</b><ul><li>Tether bundle with savings</li></ul></a>
+<a class="node" href="pages/#story" style="text-decoration:none;color:inherit"><b>Our story</b><ul><li>Kym's letter and who does what</li></ul></a>
+<a class="node" href="pages/#reviews" style="text-decoration:none;color:inherit"><b>Reviews</b><ul><li>Video reviews and the testimonial wall</li></ul></a>
+<a class="node" href="pages/#resources" style="text-decoration:none;color:inherit"><b>Resources</b><ul><li>Searchable guides and FAQs</li></ul></a>
+<a class="node" href="pages/#press" style="text-decoration:none;color:inherit"><b>Press and awards</b><ul><li>Bragging Wall timeline</li></ul></a>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Site map</h2>
+<p class="lead">Every page on the new site. Pages marked new don't exist on the GoDaddy site today.</p>
+<div class="tree">
+<div class="node"><b>Shop</b><ul><li>Magnetic Guitar Pedalboards (systems and board only)</li><li>Magnetic Pedal Trays (Gravity, ISO and Dummy or "Support" Boots)</li><li>Pedalboard Power (batteries and AC adapters)</li><li>Pedal Power Cables and Tethers</li><li>Flat Patch Cables</li><li>Cases and Gig Bags</li><li>Earthboard Merch</li></ul></div>
+<div class="node"><b>How it works <span class="new">new</span></b><ul><li>Setup in under 30 minutes</li><li>Voltage and isolation explained</li><li>What our names mean</li><li>One battery, two boards</li></ul></div>
+<div class="node"><b>Resources <span class="new">new</span></b><ul><li>Manuals as readable pages</li><li>FAQs</li><li>Recall notices</li><li>Downloadable PDFs</li></ul></div>
+<div class="node"><b>Reviews</b><ul><li>Customer reviews and stars</li><li>Video reviews: Johnny Hiland, Doug Kilishek, Worship Musician</li><li>Testimonials</li></ul></div>
+<div class="node"><b>Videos</b><ul><li>Build and how-to videos</li><li>Short clips cut from longer videos</li><li>Gig footage</li></ul></div>
+<div class="node"><b>Press and awards</b><ul><li>Timeline from 2018 on, built from your Bragging Wall (29 pieces)</li><li>Press releases archive</li></ul></div>
+<div class="node"><b>Our story</b><ul><li>How Rare Earth Music got its name</li><li>Who does what (in place of "Executive team")</li><li>Kym's letter to customers</li></ul></div>
+<div class="node"><b>Blog and contact</b><ul><li>Mark's posts plus our monthly topics</li><li>Contact and international orders</li></ul></div>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Everything we've talked about</h2>
+<p class="lead">From our October 30 kickoff, the onboarding doc and our November 12 walkthrough, plus where each item stands.</p>
+<div class="scroll"><table class="stack">
+<thead><tr><th>Item</th><th>Where it stands</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td>Move from GoDaddy to Shopify</td><td>Agreed. Store is being set up under Kym's email.</td><td><span class="st prog">In progress</span></td></tr>
+<tr><td>2 or 3 homepage layouts</td><td>Three directions ready, see above.</td><td><span class="st done">Ready to review</span></td></tr>
+<tr><td>Product pages set up for AI shopping</td><td>EBII and Gravity Boot drafts with specs as real text.</td><td><span class="st done">Ready to review</span></td></tr>
+<tr><td>Keep the upsell dropdowns</td><td>Kept and made more visible, with photos and a live price.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Boots, tethers and other product names</td><td>Research is done. Keep the names and add a plain descriptor, for example "Gravity Boot 9V Magnetic Pedal Tray" and "Gravity Boot Tether DC Pedal Power Cable." Old names still work in site search.</td><td><span class="st done">Decided</span></td></tr>
+<tr><td>"Power supplies" vs "Batteries and AC adapters"</td><td>You were both partly right. Stores like Sweetwater do put batteries and single adapters under "power supplies," but guitarists picture an isolated power brick when they hear the term. The menu will say "Pedalboard Power," and the page heading will read "Rechargeable Pedalboard Batteries and AC Power Adapters."</td><td><span class="st done">Decided</span></td></tr>
+<tr><td>How AI tools see Earthboard today</td><td>We asked ChatGPT and Gemini the same question about pedalboards that run without a wall outlet and don't use velcro. Gemini named Earthboard second, after a 2026 Kickstarter. ChatGPT didn't mention Earthboard at all. This is our starting point to measure against.</td><td><span class="st prog">Baseline set</span></td></tr>
+<tr><td>Missing reviews</td><td>The EBII page still shows 4.9 from 22 reviews. We're checking the other products, and all reviews move to Shopify.</td><td><span class="st prog">In progress</span></td></tr>
+<tr><td>Payment deposit notices</td><td>Looking into GoDaddy now. Payout alerts get set up fresh in Shopify.</td><td><span class="st prog">In progress</span></td></tr>
+<tr><td>Sales as popups, not banners</td><td>Example popup in direction A.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>"Notify me" and growing the email list</td><td>Shown on the product page for out-of-stock items.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Manuals and FAQs AI can read</td><td>Searchable Resources page with readable guides and FAQs.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Press, awards and broken links</td><td>Press timeline built from the Bragging Wall. We're recovering the old links.</td><td><span class="st prog">In progress</span></td></tr>
+<tr><td>"Executive team" feels too corporate</td><td>Now "Who does what" on Our story.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Kym's letter to customers</td><td>On Our story, word for word. An excerpt is in direction C.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Earthboard merch category</td><td>In the shop menu.</td><td><span class="st done">Planned</span></td></tr>
+<tr><td>Thanksgiving sale</td><td>Runs on GoDaddy this year since the new site won't be live yet.</td><td><span class="st done">Noted</span></td></tr>
+<tr><td>Product photo shoot</td><td>Shot list below. Let's pick a date.</td><td><span class="st wait">Need a date</span></td></tr>
+<tr><td>Product rollout plan</td><td>Mark will share the backward-compatible release plan after the meeting with Tad and Gary.</td><td><span class="st wait">From Mark</span></td></tr>
+<tr><td>Mobile first</td><td>Every page is built for phones first. Try them on yours.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Homepage too wordy</td><td>Each direction leads with one big idea. Details live on How it works and the product pages.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Holiday backorder notice</td><td>A shipping notice runs across the top of C and the inner pages. Please confirm the wording.</td><td><span class="st wait">Need wording</span></td></tr>
+<tr><td>Different discounts by product</td><td>Shopify discounts boards without touching batteries and cases. The 12footchain and save20 codes carry over.</td><td><span class="st done">Planned</span></td></tr>
+<tr><td>Video testimonials</td><td>Johnny Hiland, Doug Kilishek and Doug Doppler on the Reviews page and in C.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Short-form video and gig footage</td><td>We'll cut your long videos and Kym's gig clips into Reels and Shorts. Please send us any gig videos you find.</td><td><span class="st prog">In progress</span></td></tr>
+<tr><td>Recall notice</td><td>Moves to a Safety notices box on Resources.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Blog cadence</td><td>Mark writes when he likes. We send monthly topics and post on a set schedule.</td><td><span class="st done">Planned</span></td></tr>
+<tr><td>Gen 3, built in the open</td><td>A "What's next" section on Our Story, plus the Dallas show in May.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Veteran owned, made in the USA, Millcreek</td><td>On Our Story and in every footer. This also fixes AI tools that still say Nashville.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Ideas from customers</td><td>The green LED, the ISO Boot and the flat patch cables are featured in C and on Our Story.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Gift buyers (parents and family)</td><td>A "Shopping for a gift" option in C's player picker.</td><td><span class="st done">In the drafts</span></td></tr>
+<tr><td>Podcast idea</td><td>Not on the site yet. It can become a Videos tab once episodes exist.</td><td><span class="st wait">Later</span></td></tr>
+<tr><td>Amazon and TikTok Shop</td><td>Paused for now. We'll focus on the new site and social first.</td><td><span class="st wait">Later</span></td></tr>
+</tbody></table></div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>What we need from you</h2>
+<p class="lead">Quick answers here keep the build moving.</p>
+<div class="need">
+<div><b>Your favorite direction</b><span>Or the pieces you'd mix together.</span></div>
+<div><b>EBII-SR details</b><span>Pedal count, size, weight and what's in the box.</span></div>
+<div><b>ISO Boot voltages</b><span>Your Videos page lists 9, 12 and 18V. The TikTok Shop lists 9, 12, 15, 18 and 24V. Which are standard?</span></div>
+<div><b>Magnet and daisy-chain answers</b><span>Mark's answers to "Will magnets hurt my pedals?" and "Is it a daisy chain?" These are the top questions online.</span></div>
+<div><b>"Dummy Boot" or "Support Boot"?</b><span>One report suggests "Support Boot" because it says what the part does. Your call.</span></div>
+<div><b>Battery runtime tests</b><span>Two or three real boards and how many hours each one ran.</span></div>
+<div><b>Pedal count for the EBII</b><span>"Up to 11 plus a battery" or "comfortably fits twelve"?</span></div>
+<div><b>Holiday shipping wording</b><span>4 to 6 weeks, or up to 90 days for some items?</span></div>
+<div><b>Industry quote</b><span>Can we name the pedalboard inventor who said "you nailed it"?</span></div>
+<div><b>New photos of Mark and Kym</b><span>For the "Who does what" section.</span></div>
+<div><b>Photo shoot date</b><span>Shots: a single Gravity Boot, the ISO Boot, tethers, the EBII-SR and the cases, all on white.</span></div>
+<div><b>Your next offer</b><span>So the sale popup has real wording.</span></div>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>Next steps</h2>
+<div class="next">
+<div><i>1</i><p style="margin:0">You pick a direction (or a mix) and send us any changes.</p></div>
+<div><i>2</i><p style="margin:0">We finish the search research and lock in product names and categories.</p></div>
+<div><i>3</i><p style="margin:0">We build the Shopify store in the chosen style and move products, reviews and blog posts over.</p></div>
+<div><i>4</i><p style="margin:0">Photo shoot, then a full walkthrough before launch.</p></div>
+</div>
+</div>
+</section>
+
+<footer><div class="wrap">Prepared by Be AI Visible for Earthboard · Questions? Text or email Milana anytime.</div></footer>
+</body>
+</html>
