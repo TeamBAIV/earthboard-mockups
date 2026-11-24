@@ -1,7 +1,7 @@
 /* Earthboard mockup notes: a "Leave a note" panel on every page.
    Notes save in this browser and can be emailed or copied to Milana. */
 (function(){
-  var TO = 'NOTES_EMAIL';
+  var TO = 'milana@beaivisible.ai';
   var KEY = 'eb-mockup-notes', NKEY = 'eb-mockup-name';
   function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch(e){ return mem; } }
   function save(list){ mem = list; try { localStorage.setItem(KEY, JSON.stringify(list)); } catch(e){} }
