@@ -137,6 +137,21 @@ main{position:relative}
 @media(max-width:860px){.radio{grid-template-columns:minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.spin,.eqb i{animation:none}}
 
+
+/* power */
+.pwr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:30px}
+.pmode{border-radius:20px;background:linear-gradient(180deg,#202126,#16171b);border:2px solid #2c2e34;padding:26px 26px 28px;position:relative}
+.pmode .sw2{display:inline-flex;align-items:center;gap:10px;font-family:Bungee,sans-serif;font-size:14px;letter-spacing:.06em;color:#d3d6db}
+.pmode .sw2 i{width:14px;height:14px;border-radius:50%;background:#20d060;box-shadow:0 0 12px 2px #20d060}
+.pmode.b .sw2 i{background:#ffb21a;box-shadow:0 0 12px 2px #ffb21a}
+.pmode h3{font-family:Bungee,sans-serif;font-size:24px;margin:14px 0 8px}
+.pmode p{margin:0;color:#d6d9e0}
+.pmode ul{margin:12px 0 0;padding-left:18px;color:var(--dim)}
+.kymnote{margin-top:22px;background:#fbf8ef;color:#1a1a1a;border-radius:4px;padding:22px 26px;transform:rotate(-.6deg);box-shadow:0 14px 30px rgba(0,0,0,.45);font-size:16px}
+.kymnote b{font-family:'Permanent Marker',cursive;font-weight:400;font-size:20px;display:block;margin-bottom:4px}
+.conf{color:#b07a00;font-size:13px;white-space:nowrap}.pmode .conf{color:#ffd84d}
+@media(max-width:860px){.pwr{grid-template-columns:minmax(0,1fr)}}
+
 /* output */
 .out{border-radius:24px;background:#1c1d21;border:2px solid #2c2e34;padding:clamp(28px,4vw,50px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
 .out form{display:flex;gap:10px;flex-wrap:wrap}
@@ -252,7 +267,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:18px;
 <div class="ledrow"><span class="lamp" style="background:#0b1a3a"></span></div>
 <div class="pname">Unplugged</div>
 <p class="says">"I hate searching for wall outlets and extension cords."</p>
-<p class="fix">One battery powers the board, and can even power a second connected Earthboard.</p>
+<p class="fix">One battery powers the board, and can even power a second connected Earthboard. Have clean power? Plug into the wall instead.</p>
 <div class="hint">Stomp to fix it</div>
 <button class="stomp" type="button" aria-pressed="false" aria-label="Show the Unplugged fix"></button>
 </article>
@@ -267,6 +282,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:18px;
 </article>
 </div>
 <div class="pedal-rail" aria-hidden="true"><div class="rail"></div></div>
+</div>
+</section>
+
+<section class="sec" id="power">
+<div class="wrap">
+<span class="jack"><i></i>POWER SECTION</span>
+<h2 style="margin-top:14px">Nervous about batteries?</h2>
+<p class="sub">Two ways to power the board. Flip between them anytime.</p>
+<div class="pwr">
+<div class="pmode"><span class="sw2"><i></i>BATTERY</span><h3>Play anywhere</h3><p>We trust batteries to drive cars and electric delivery trucks. A pedalboard is easy work.</p><ul><li>Up to 18 hours on one charge</li><li>No noisy venue outlets</li><li>Lithium cells like the ones in electric cars <span class="conf">[Confirm]</span></li></ul></div>
+<div class="pmode b"><span class="sw2"><i></i>WALL</span><h3>Clean power? Plug in.</h3><p>Got quiet power at home or in the studio? Plug into the Power Station and play. Studio owners run theirs this way.</p><ul><li>9V DC wall adapter, 3A</li><li>Power ports on both sides of the board</li></ul></div>
+</div>
+<div class="kymnote"><b>A note from Kym</b>Early on, a few players told us they were nervous about running on a battery. So we built our own AC adapter. Since then it's been nothing but good feedback, and we've never had a battery failure. <span class="conf">[Confirm wording]</span></div>
 </div>
 </section>
 
@@ -380,7 +408,7 @@ document.getElementById('sign').addEventListener('submit',e=>{e.preventDefault()
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rd=document.querySelector('.radio'),pp=document.getElementById('pp');pp.addEventListener('click',()=>{const p=rd.classList.toggle('paused');pp.setAttribute('aria-pressed',p?'false':'true');document.getElementById('ppt').textContent=p?'Play':'Pause';});
 document.documentElement.classList.add('js');
-document.querySelectorAll('.pedal,.amp,.setlist,.tracks,.sec h2,.sec .sub,.leds > div,.out,.score').forEach((e,i)=>{e.classList.add('reveal');e.style.transitionDelay=((i%3)*110)+'ms';});
+document.querySelectorAll('.pedal,.amp,.setlist,.tracks,.pmode,.kymnote,.sec h2,.sec .sub,.leds > div,.out,.score').forEach((e,i)=>{e.classList.add('reveal');e.style.transitionDelay=((i%3)*110)+'ms';});
 const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
 }

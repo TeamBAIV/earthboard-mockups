@@ -148,6 +148,20 @@ footer b{color:#fff;font-family:Anton,sans-serif;font-size:26px;font-weight:400;
 .tl::before,.tl .fill{left:11px}.stop{grid-template-columns:24px minmax(0,1fr);gap:4px 18px}.stop .dot{grid-row:1/span 3;align-self:start;margin-top:8px}.time{text-align:left;font-size:24px}.stop img{height:200px;margin-top:10px}}
 @media(max-width:520px){.vids{grid-template-columns:minmax(0,1fr)}.sticker{width:96px;height:96px;font-size:15px}}
 @media(prefers-reduced-motion:reduce){.eq b,.stage img,.sticker,.ticker div,.letter img,.eyebrow i{animation:none}.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* power */
+.power{background:var(--sky)}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:30px}
+.pc{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px 26px 28px;box-shadow:0 10px 30px rgba(11,27,43,.06)}
+.pc .ic{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:var(--sun)}
+.pc.w .ic{background:var(--sky2)}
+.pc h3{font-family:Anton,sans-serif;font-weight:400;font-size:28px;text-transform:uppercase;margin:14px 0 6px;letter-spacing:.01em}
+.pc p{margin:0;color:var(--dim)}
+.pc ul{margin:12px 0 0;padding-left:18px;color:var(--ink)}
+.pquote{margin-top:22px;background:var(--ink);color:#fff;border-radius:20px;padding:24px 28px;font-size:18px}
+.pquote small{display:block;color:#b9c7d6;font-size:14px;margin-top:6px}
+.conf{color:#b07a00;font-size:13px;white-space:nowrap}.pquote .conf{color:var(--sun)}
+@media(max-width:820px){.pgrid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -206,6 +220,18 @@ footer b{color:#fff;font-family:Anton,sans-serif;font-size:26px;font-weight:400;
 <img id="pimg" src="assets/board-side.jpg" alt="">
 <div id="ptext"></div>
 </div>
+</div>
+</section>
+
+<section class="band power" id="power">
+<div class="wrap">
+<h2 class="title reveal">Nervous about batteries?</h2>
+<p class="sub reveal">Fair question. Here's the short answer: use the battery, the wall or both.</p>
+<div class="pgrid">
+<div class="pc reveal"><div class="ic" aria-hidden="true">🔋</div><h3>Battery</h3><p>We trust batteries to drive cars and electric delivery trucks. Running a pedalboard is easy work.</p><ul><li>Up to 18 hours on one charge</li><li>Stay off the venue's noisy outlets</li><li>Lithium cells like the ones in electric cars <span class="conf">[Confirm]</span></li></ul></div>
+<div class="pc w reveal"><div class="ic" aria-hidden="true">🔌</div><h3>Wall power</h3><p>Have clean, quiet power at home or in the studio? Plug into the Power Station and play. Studio owners run theirs this way.</p><ul><li>9V DC wall adapter, 3A</li><li>Ports on both sides of the board</li></ul></div>
+</div>
+<p class="pquote reveal">"Early on, a few players were nervous about batteries, so we built our own AC adapter. Since then it's been nothing but good feedback, and we've never had a battery failure." <span class="conf">[Confirm wording]</span><small>Kym Bradley, co-founder</small></p>
 </div>
 </section>
 

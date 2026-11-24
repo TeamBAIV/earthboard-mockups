@@ -145,6 +145,19 @@ footer .tl{font-family:Michroma,sans-serif;color:#fff;font-size:15px}
 .hero{min-height:0;padding-bottom:40px}
 }
 @media(max-width:520px){.patches{grid-template-columns:minmax(0,1fr)}.ring{width:150px;height:150px}.promo{left:10px;right:10px;max-width:none}}
+
+/* power */
+.power{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:34px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 28px 30px;position:relative;overflow:hidden}
+.pcard::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);opacity:.5}
+.pcard .lab{font-family:Michroma,sans-serif;font-size:12px;letter-spacing:.18em;color:#8fb3ff}
+.pcard h3{font-size:24px;margin:10px 0 10px}
+.pcard p{margin:0;color:#c6cfe3}
+.pcard ul{margin:14px 0 0;padding-left:18px;color:#c6cfe3}
+.proof{margin-top:22px;padding:18px 22px;border-left:3px solid var(--led);background:rgba(61,107,255,.08);border-radius:0 14px 14px 0;color:#dfe6f7}
+.conf{color:#ffd84d;font-size:13px;white-space:nowrap}
+@media(max-width:820px){.power{grid-template-columns:minmax(0,1fr)}}
+
 /* motion */
 .stars{animation:twinkle 5s ease-in-out infinite}
 @keyframes twinkle{0%,100%{opacity:.85}50%{opacity:.4}}
@@ -184,7 +197,7 @@ footer .tl{font-family:Michroma,sans-serif;color:#fff;font-size:15px}
 <div>
 <div class="kicker">THE EARTHBOARD PEDALBOARD SYSTEM</div>
 <h1>Out of this world. <span>Down to earth.</span></h1>
-<p class="lede">Pedals lock onto powered steel rails with rare earth magnets. No ripping velcro off the board, no power brick and no hunting for a wall outlet. Swap a pedal between songs and keep playing.</p>
+<p class="lede">Pedals lock onto powered steel rails with rare earth magnets. No ripping velcro off the board and no power brick. Run it on the battery, or plug into the wall when the power is clean. Swap a pedal between songs and keep playing.</p>
 <div class="ctas">
 <a class="btn go" href="#vessels">Choose your board</a>
 <a class="btn ghost" href="#launch">See how it works</a>
@@ -213,12 +226,12 @@ footer .tl{font-family:Michroma,sans-serif;color:#fff;font-size:15px}
 <section class="band" id="launch">
 <div class="wrap">
 <div class="kicker">LAUNCH SEQUENCE</div>
-<h2 class="sec-title">Three, two, one, play.</h2>
+<h2 class="sec-title">One, two, three, play.</h2>
 <p class="sec-sub">Set it up once. After that, every change takes seconds.</p>
 <div class="count">
 <article class="step">
 <img src="assets/boots-fan.jpg" alt="Gravity Boots and ISO Boots fanned out in front of a board with red LEDs" style="object-position:50% 72%">
-<div class="t"><div class="tminus">3</div><h3>Mount each pedal</h3><p>Stick each pedal on a Gravity Boot, our magnetic pedal tray. Loop-side velcro is already on it.</p></div>
+<div class="t"><div class="tminus">1</div><h3>Mount each pedal</h3><p>Stick each pedal on a Gravity Boot, our magnetic pedal tray. Loop-side velcro is already on it.</p></div>
 </article>
 <article class="step">
 <img src="assets/violet-led.jpg" alt="Earthboard glowing purple at a venue">
@@ -226,9 +239,23 @@ footer .tl{font-family:Michroma,sans-serif;color:#fff;font-size:15px}
 </article>
 <article class="step">
 <img src="assets/board-top.jpg" alt="A gig-ready Earthboard seen from above" style="object-position:50% 78%">
-<div class="t"><div class="tminus">1</div><h3>Play anywhere</h3><p>Run it all on a quiet battery or plug into AC. Roll a pedal off, set a new one on, done.</p></div>
+<div class="t"><div class="tminus">3</div><h3>Play anywhere</h3><p>Run it all on a quiet battery or plug into AC. Roll a pedal off, set a new one on, done.</p></div>
 </article>
 </div>
+</div>
+</section>
+
+
+<section class="band" id="power" style="padding-top:0">
+<div class="wrap">
+<div class="kicker reveal">POWER SYSTEMS</div>
+<h2 class="sec-title reveal">Nervous about batteries?</h2>
+<p class="sec-sub reveal">We heard that early on. It's why we built our own AC adapter, so every Earthboard runs both ways.</p>
+<div class="power">
+<div class="pcard reveal"><div class="lab">MODE 1 · BATTERY</div><h3>Built to go the distance</h3><p>Batteries drive cars and electric delivery trucks. Running a pedalboard is easy work.</p><ul><li>Up to 18 hours on one charge</li><li>Keeps you off noisy venue outlets</li><li>Lithium cells like the ones in electric cars <span class="conf">[Confirm]</span></li></ul></div>
+<div class="pcard reveal"><div class="lab">MODE 2 · WALL POWER</div><h3>Clean power? Plug in.</h3><p>Got quiet, clean power at home or in the studio? Plug into the Power Station and play. Studio owners run their Earthboards this way.</p><ul><li>9V DC wall adapter, 3A</li><li>Power ports on both sides of the board</li><li>Switch between modes anytime</li></ul></div>
+</div>
+<p class="proof reveal">Since we added the AC option, players have sent us nothing but good feedback, and we have never had a battery failure. <span class="conf">[Confirm wording]</span></p>
 </div>
 </section>
 
